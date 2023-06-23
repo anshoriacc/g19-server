@@ -17,13 +17,12 @@ const verifyJWT = async (req, res, next) => {
     const tokenCheck = await Token.findOne({ where: { token } });
     if (!tokenCheck) return res.error(401, 'Silakan login terlebih dahulu.');
 
-    jwt.verify(token, SECRET_KEY, { issuer: ISSUER }, (err, payload) => {
-      if (err) return res.error(403);
-      req.user = payload;
-      next();
-    });
+    const payload = jwt.verify(token, SECRET_KEY, { issuer: ISSUER });
+    const { id, email, username, role } = payload;
+    req.user = { id, email, username, role };
+    next();
   } catch (err) {
-    console.log(err);
+    console.log('verifyJWT error', err);
     return res.error();
   }
 };
