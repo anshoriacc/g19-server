@@ -46,7 +46,10 @@ const login = async (req, res) => {
 
     const token = jwt.sign(payload, SECRET_KEY, jwtOptions);
 
-    const storeToken = await Token.create({ token, userId: user.id });
+    const storeToken = await Token.create(
+      { token, userId: user.id },
+      { transaction }
+    );
     console.log('storeToken', storeToken);
 
     await transaction.commit();
@@ -58,16 +61,21 @@ const login = async (req, res) => {
   } catch (err) {
     console.log('login error', err);
     await transaction.rollback();
+    res.error();
   }
 };
 
 const register = async (req, res) => {
   const { email, username, password, name, address, phone } = req.body;
 
-  if (!password) return res.error(400, 'Password tidak boleh kosong.');
+  if (!email || !username || !password)
+    return res.error(400, 'Email, username, dan password tidak boleh kosong.');
 
-  if (password.length < 8)
-    return res.error(400, 'Password tidak boleh kurang dari 8 karakter.');
+  if (password.length < 8 || password.length > 20)
+    return res.error(
+      400,
+      'Password tidak boleh kurang dari 8 karakter dan lebih dari 20 karakter.'
+    );
 
   const transaction = await sequelize.transaction();
 
@@ -80,7 +88,7 @@ const register = async (req, res) => {
         username,
         password: hashedPassword,
         profile: {
-          name: name ?? username,
+          name,
           address,
           phone,
         },
@@ -100,7 +108,7 @@ const register = async (req, res) => {
     await transaction.commit();
 
     return res.success(201, {
-      message: 'Success create admin',
+      message: 'Success create user.',
       data: response,
     });
   } catch (err) {
