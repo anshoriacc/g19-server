@@ -18,6 +18,10 @@ const Reservation = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    payment: {
+      type: DataTypes.ENUM('cash', 'cashless'),
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM(
         'pending',
