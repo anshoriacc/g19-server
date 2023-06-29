@@ -1,18 +1,17 @@
 const { UniqueConstraintError, ValidationError } = require('sequelize');
 
-const { sequelize } = require('../config');
-const { Profile, User } = require('../models');
+const { sequelize } = require('../../config');
+const { Profile, User } = require('../../models');
 
 const update = async (req, res) => {
   const { id: userId } = req.params;
-  const { body } = req;
+  const { body, image } = req;
   const { email, username, password, name, address, phone } = body;
-  const { image } = req;
-  console.log('body', req.body);
 
   if (userId !== req.user.id) {
     return res.error(403);
   }
+
   if (
     !email &&
     !username &&
@@ -22,7 +21,7 @@ const update = async (req, res) => {
     !phone &&
     !image
   ) {
-    return res.error(400, 'Isi minimal 1 field yang akan diubah.');
+    return res.error(400, 'Isi minimal 1 kolom yang akan diubah.');
   }
 
   const transaction = await sequelize.transaction();
@@ -36,8 +35,10 @@ const update = async (req, res) => {
         { where: { userId }, transaction }
       );
     }
+
     await transaction.commit();
-    res.success(200, {
+
+    return res.success(200, {
       message: 'Success update profile.',
       data: {
         id: userId,
@@ -65,8 +66,8 @@ const update = async (req, res) => {
       return res.error(400, err.errors.map((error) => error.message).join(' '));
     }
 
-    res.error();
+    return res.error();
   }
 };
 
-module.exports = { update };
+module.exports = update;
