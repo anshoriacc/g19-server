@@ -30,6 +30,10 @@ const Tour = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    availability: {
+      type: DataTypes.ENUM('everyday', 'scheduled'),
+      allowNull: false,
+    },
   },
   {
     paranoid: true,

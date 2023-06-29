@@ -16,6 +16,7 @@ const Vehicle = sequelize.define(
     },
     description: {
       type: DataTypes.TEXT,
+      allowNull: false,
     },
     capacity: {
       type: DataTypes.INTEGER,
@@ -25,9 +26,10 @@ const Vehicle = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    driver: {
+    driverMandatory: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
     },
     transmission: {
       type: DataTypes.ENUM('automatic', 'manual'),
