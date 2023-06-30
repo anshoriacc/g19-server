@@ -35,4 +35,4 @@ sequelize
       console.log('Server running on port 8080');
     })
   )
-  .catch((error) => console.log(error));
+  .catch((err) => console.log(err));

@@ -31,7 +31,7 @@ const update = async (req, res) => {
     }
     if (image || name || address || phone) {
       await Profile.update(
-        { ...body, imageUrl: req.image },
+        { ...body, imageUrl: image },
         { where: { userId }, transaction }
       );
     }

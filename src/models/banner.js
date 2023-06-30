@@ -14,10 +14,6 @@ const Banner = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT('long'),
-      allowNull: false,
-    },
     imageUrl: {
       type: DataTypes.STRING,
       allowNull: false,
