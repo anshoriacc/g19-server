@@ -1,8 +1,10 @@
-const { cloudinary } = require('../config');
 const dataUriParser = require('datauri/parser');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
-const cloudinaryUpload = async (req, res, next) => {
+const { cloudinary } = require('../config');
+
+const cloudinaryUpload = (folderName, random) => async (req, res, next) => {
   const { file, files, user } = req;
 
   if (!file && !files) {
@@ -19,8 +21,8 @@ const cloudinaryUpload = async (req, res, next) => {
       const datauri = parser.format(ext, buffer);
 
       const upload = await cloudinary.uploader.upload(datauri.content, {
-        public_id: user.id,
-        folder: 'images',
+        public_id: random ? uuidv4() : user.id,
+        folder: folderName,
       });
 
       const uploadedImage = upload.url;
@@ -45,8 +47,8 @@ const cloudinaryUpload = async (req, res, next) => {
       const datauri = parser.format(ext, buffer);
 
       const upload = await cloudinary.uploader.upload(datauri.content, {
-        public_id: `${Math.floor(Math.random() * 10e9)}`,
-        folder: 'products',
+        public_id: uuidv4(),
+        folder: folderName,
       });
 
       return upload.url;

@@ -8,7 +8,7 @@ router.patch(
   '/:id',
   verifyJWT,
   upload.single,
-  cloudinaryUpload,
+  cloudinaryUpload('profiles', false),
   profileController.update
 );
 

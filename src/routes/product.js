@@ -17,7 +17,7 @@ router.post(
   verifyJWT,
   authorize.admin,
   upload.multiple,
-  cloudinaryUpload,
+  cloudinaryUpload('products'),
   productController.create
 );
 router.patch(
@@ -25,7 +25,7 @@ router.patch(
   verifyJWT,
   authorize.admin,
   upload.multiple,
-  cloudinaryUpload,
+  cloudinaryUpload('products'),
   productController.update
 );
 router.delete(
