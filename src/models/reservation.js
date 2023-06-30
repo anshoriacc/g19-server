@@ -10,6 +10,10 @@ const Reservation = sequelize.define(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
+    type: {
+      type: DataTypes.ENUM('rental', 'tour', 'carter'),
+      allowNull: false,
+    },
     startDate: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -18,17 +22,23 @@ const Reservation = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    addOn: {
+      type: DataTypes.ENUM('driver'),
+    },
+    total: { type: DataTypes.INTEGER, allowNull: false },
     payment: {
       type: DataTypes.ENUM('cash', 'cashless'),
       allowNull: false,
     },
+    paymentId: { type: DataTypes.STRING, defaultValue: DataTypes.UUIDV4 },
     status: {
       type: DataTypes.ENUM(
         'pending',
         'paid',
         'confirmed',
         'on going',
-        'finished'
+        'finished',
+        'cancelled'
       ),
       allowNull: false,
       defaultValue: 'pending',
