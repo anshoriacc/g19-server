@@ -20,16 +20,18 @@ const cloudinaryUpload = async (req, res, next) => {
 
       const upload = await cloudinary.uploader.upload(datauri.content, {
         public_id: user.id,
-        folder: 'profile',
+        folder: 'images',
       });
 
       const uploadedImage = upload.url;
       req.image = uploadedImage;
 
       console.log('image uploaded');
+
       next();
     } catch (err) {
       console.log('upload cloudinary error', err);
+
       return res.error();
     }
   } else if (files) {
@@ -46,17 +48,21 @@ const cloudinaryUpload = async (req, res, next) => {
         public_id: `${Math.floor(Math.random() * 10e9)}`,
         folder: 'products',
       });
+
       return upload.url;
     });
 
     try {
       const uploadedImages = await Promise.all(uploadPromises);
       req.images = uploadedImages;
+
       console.log('images uploaded');
+
       next();
     } catch (err) {
       console.log('upload cloudinary error', err);
-      return res.sendServerError();
+
+      return res.error();
     }
   }
 };

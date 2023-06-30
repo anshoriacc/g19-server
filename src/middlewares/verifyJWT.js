@@ -20,9 +20,14 @@ const verifyJWT = async (req, res, next) => {
     const payload = jwt.verify(token, SECRET_KEY, { issuer: ISSUER });
     const { id, email, username, role } = payload;
     req.user = { id, email, username, role };
+
     next();
   } catch (err) {
     console.log('verifyJWT error', err);
+    if (err instanceof jwt.TokenExpiredError) {
+      return res.error(401, 'Session expired, silakan login kembali.');
+    }
+
     return res.error();
   }
 };
