@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { sequelize } = require('../../config');
 const {
   Vehicle,
@@ -7,6 +8,7 @@ const {
   TourImage,
   TourHighlight,
   TourItinerary,
+  Reservation,
 } = require('../../models');
 
 const productTypes = ['rental', 'tour', 'carter'];
@@ -20,7 +22,22 @@ const getDetail = async (req, res) => {
   try {
     let data;
     if (type.toLowerCase() === 'rental') {
-      const { startDate, endDate } = req.query;
+      const { sDate, eDate } = req.query;
+      let reservationCount = 0;
+
+      if (sDate && eDate) {
+        reservationCount = await Reservation.count({
+          where: {
+            vehicleId: productId,
+            [Op.or]: [
+              { startDate: { [Op.between]: [sDate, eDate] } },
+              { endDate: { [Op.between]: [sDate, eDate] } },
+            ],
+            status: { [Op.or]: ['confirmed', 'on going'] },
+          },
+          transaction,
+        });
+      }
 
       const vehicle = await Vehicle.findByPk(productId, {
         include: [{ model: VehicleImage, attributes: ['imageUrl'] }],
@@ -29,10 +46,13 @@ const getDetail = async (req, res) => {
 
       if (!vehicle) return res.error(404);
 
-      console.log('vehicle', vehicle);
-
-      const { vehicleImages, ...rest } = vehicle.toJSON();
-      data = { ...rest, images: vehicleImages.map((image) => image.imageUrl) };
+      const { vehicleImages, ...vehicleData } = vehicle.toJSON();
+      data = {
+        ...vehicleData,
+        reservationCount,
+        availableStock: vehicleData.quantity - reservationCount,
+        images: vehicleImages.map((image) => image.imageUrl),
+      };
     }
 
     if (type.toLowerCase() === 'tour') {
@@ -57,17 +77,15 @@ const getDetail = async (req, res) => {
 
       if (!tour) return res.error(404);
 
-      console.log('tour', tour);
-
       const {
         tourImages,
         tourHighlights,
         tourDates,
         tourItineraries,
-        ...rest
+        ...tourData
       } = tour.toJSON();
       data = {
-        ...rest,
+        ...tourData,
         images: tourImages.map((image) => image.imageUrl),
         highlights: tourHighlights.map((highlight) => highlight.highlight),
         dates: tourDates.map((date) => ({

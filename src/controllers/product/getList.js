@@ -53,10 +53,10 @@ const getList = async (req, res) => {
       });
 
       data = vehicles.map((vehicle) => {
-        const { vehicleImages, ...rest } = vehicle.toJSON();
+        const { vehicleImages, ...vehicleData } = vehicle.toJSON();
 
         return {
-          ...rest,
+          ...vehicleData,
           images: vehicleImages.map((image) => image.imageUrl),
         };
       });
@@ -95,11 +95,11 @@ const getList = async (req, res) => {
           tourHighlights,
           tourDates,
           tourItineraries,
-          ...rest
+          ...tourData
         } = tour.toJSON();
 
         return {
-          ...rest,
+          ...tourData,
           images: tourImages.map((image) => image.imageUrl),
           highlights: tourHighlights.map((highlight) => highlight.highlight),
           dates: tourDates.map((date) => ({
@@ -127,7 +127,7 @@ const getList = async (req, res) => {
       meta,
     });
   } catch (err) {
-    console.log('get products error', err);
+    console.log('get product list error', err);
     await transaction.rollback();
 
     return res.error();

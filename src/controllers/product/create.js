@@ -14,8 +14,6 @@ const productTypes = ['rental', 'tour', 'carter'];
 const create = async (req, res) => {
   const { type } = req.params;
   const { body, images } = req;
-  console.log('body images', body.images);
-  console.log('images', images);
 
   if (!productTypes.includes(type.toLowerCase())) return res.error(404);
 
@@ -29,7 +27,7 @@ const create = async (req, res) => {
     if (type.toLowerCase() === 'rental') {
       const { driverMandatory, transmission, quantity } = body;
 
-      if (!quantity) {
+      if (!quantity || !driverMandatory || !transmission) {
         return res.error(400, 'Semua kolom wajib diisi.');
       }
 

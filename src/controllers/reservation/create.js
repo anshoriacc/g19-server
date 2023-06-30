@@ -62,12 +62,7 @@ const create = async (req, res) => {
 
     let paymentUrl = '';
     if (createReservation.payment === 'cashless') {
-      paymentUrl = await midtransSnap
-        .createTransaction(parameter)
-        .then((transaction) => {
-          console.log(transaction);
-          return transaction.redirect_url;
-        });
+      paymentUrl = await midtransSnap.createTransactionRedirectUrl(parameter);
     }
 
     return res.success(201, {

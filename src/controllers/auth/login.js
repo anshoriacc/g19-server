@@ -50,7 +50,6 @@ const login = async (req, res) => {
       { token, userId: user.id },
       { transaction }
     );
-    console.log('storeToken', storeToken);
 
     await transaction.commit();
 

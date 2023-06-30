@@ -16,8 +16,6 @@ const productTypes = ['rental', 'tour', 'carter'];
 const update = async (req, res) => {
   const { type, id: productId } = req.params;
   const { body, images } = req;
-  console.log('body images', body.images);
-  console.log('images', images);
 
   if (!productTypes.includes(type.toLowerCase())) return res.error(404);
 

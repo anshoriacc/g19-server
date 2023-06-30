@@ -41,8 +41,6 @@ const getDetail = async (req, res) => {
         transaction,
       });
 
-      console.log('tour.json', tour);
-
       const { tourImages, ...tourData } = tour.toJSON();
       product = {
         ...tourData,
