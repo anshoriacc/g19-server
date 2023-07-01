@@ -1,6 +1,6 @@
-const { sequelize } = require('../../config');
 const { metadata } = require('../../helpers');
 const {
+  sequelize,
   Reservation,
   Vehicle,
   User,
@@ -37,18 +37,35 @@ const getList = async (req, res) => {
       include: [
         {
           model: User,
+          as: 'user',
           attributes: ['email', 'username'],
-          include: [{ model: Profile, attributes: ['name', 'imageUrl'] }],
+          include: [
+            {
+              model: Profile,
+              as: 'profile',
+              attributes: ['name', 'imageUrl'],
+            },
+          ],
         },
         {
           model: Vehicle,
+          as: 'vehicle',
           attributes: ['name'],
-          include: [{ model: VehicleImage, attributes: ['imageUrl'] }],
+          include: [
+            {
+              model: VehicleImage,
+              as: 'vehicleImages',
+              attributes: ['imageUrl'],
+            },
+          ],
         },
         {
           model: Tour,
+          as: 'tour',
           attributes: ['name'],
-          include: [{ model: TourImage, attributes: ['imageUrl'] }],
+          include: [
+            { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
+          ],
         },
       ],
       limit,

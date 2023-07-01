@@ -1,8 +1,7 @@
 const { ValidationError, UniqueConstraintError } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const { sequelize } = require('../../config');
-const { User, Profile } = require('../../models');
+const { sequelize, User, Profile } = require('../../models');
 
 const register = async (req, res) => {
   const { email, username, password, name, address, phone } = req.body;
@@ -33,14 +32,26 @@ const register = async (req, res) => {
         },
       },
       {
-        include: [{ model: Profile, attributes: ['name', 'address', 'phone'] }],
+        include: [
+          {
+            model: Profile,
+            as: 'profile',
+            attributes: ['name', 'address', 'phone'],
+          },
+        ],
         transaction,
       }
     );
 
     const response = await User.findByPk(createUser.id, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Profile, attributes: ['name', 'address', 'phone'] }],
+      include: [
+        {
+          model: Profile,
+          as: 'profile',
+          attributes: ['name', 'address', 'phone'],
+        },
+      ],
       transaction,
     });
 

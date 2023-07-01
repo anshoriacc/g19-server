@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
-const { sequelize } = require('../../config');
+
 const {
+  sequelize,
   Vehicle,
   VehicleImage,
   Tour,
@@ -28,10 +29,10 @@ const getDetail = async (req, res) => {
       if (sDate && eDate) {
         reservationCount = await Reservation.count({
           where: {
-            vehicleId: productId,
+            vehicle_id: productId,
             [Op.or]: [
-              { startDate: { [Op.between]: [sDate, eDate] } },
-              { endDate: { [Op.between]: [sDate, eDate] } },
+              { start_date: { [Op.between]: [sDate, eDate] } },
+              { end_date: { [Op.between]: [sDate, eDate] } },
             ],
             status: { [Op.or]: ['confirmed', 'on going'] },
           },
@@ -40,7 +41,13 @@ const getDetail = async (req, res) => {
       }
 
       const vehicle = await Vehicle.findByPk(productId, {
-        include: [{ model: VehicleImage, attributes: ['imageUrl'] }],
+        include: [
+          {
+            model: VehicleImage,
+            as: 'vehicleImages',
+            attributes: ['imageUrl'],
+          },
+        ],
         transaction,
       });
 
@@ -58,17 +65,20 @@ const getDetail = async (req, res) => {
     if (type.toLowerCase() === 'tour') {
       const tour = await Tour.findByPk(productId, {
         include: [
-          { model: TourImage, attributes: ['imageUrl'] },
+          { model: TourImage, as: 'vehicleImages', attributes: ['imageUrl'] },
           {
             model: TourHighlight,
+            as: 'tourHighlights',
             attributes: ['highlight'],
           },
           {
             model: TourDate,
+            as: 'tourDates',
             attributes: ['startDate', 'endDate'],
           },
           {
             model: TourItinerary,
+            as: 'tourItineraries',
             attributes: ['time', 'itinerary'],
           },
         ],

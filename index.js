@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
-const { sequelize } = require('./src/config');
+const { sequelize } = require('./src/models');
 const router = require('./src/routes');
 const { responseMiddleware } = require('./src/middlewares');
 
@@ -29,7 +29,7 @@ app.get('/', (_, res) => {
 });
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() =>
     app.listen(8080, () => {
       console.log('Server running on port 8080');

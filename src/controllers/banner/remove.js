@@ -1,5 +1,4 @@
-const { sequelize } = require('../../config');
-const { Banner } = require('../../models');
+const { sequelize, Banner } = require('../../models');
 
 const remove = async (req, res) => {
   const { id: bannerId } = req.params;

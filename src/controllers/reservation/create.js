@@ -1,6 +1,5 @@
-const { sequelize } = require('../../config');
 const { midtransSnap } = require('../../helpers');
-const { Reservation } = require('../../models');
+const { sequelize, Reservation } = require('../../models');
 
 const create = async (req, res) => {
   const { body, user } = req;

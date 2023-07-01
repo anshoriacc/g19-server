@@ -1,24 +1,30 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config');
-
-const TourHighlight = sequelize.define(
-  'tourHighlight',
-  {
-    id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    highlight: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-  },
-  {
-    paranoid: true,
-    underscored: true,
+'use strict';
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class TourHighlight extends Model {
+    static associate({ Tour }) {
+      this.belongsTo(Tour);
+    }
   }
-);
-
-module.exports = TourHighlight;
+  TourHighlight.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      highlight: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'TourHighlight',
+      paranoid: true,
+      underscored: true,
+    }
+  );
+  return TourHighlight;
+};

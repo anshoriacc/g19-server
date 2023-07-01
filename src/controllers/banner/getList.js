@@ -1,5 +1,4 @@
-const { sequelize } = require('../../config');
-const { Banner } = require('../../models');
+const { sequelize, Banner } = require('../../models');
 
 const getList = async (req, res) => {
   const transaction = await sequelize.transaction();

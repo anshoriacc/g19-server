@@ -1,24 +1,30 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config');
-
-const VehicleImage = sequelize.define(
-  'vehicleImage',
-  {
-    id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    paranoid: true,
-    underscored: true,
+'use strict';
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class VehicleImage extends Model {
+    static associate({ Vehicle }) {
+      this.belongsTo(Vehicle);
+    }
   }
-);
-
-module.exports = VehicleImage;
+  VehicleImage.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      imageUrl: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'VehicleImage',
+      paranoid: true,
+      underscored: true,
+    }
+  );
+  return VehicleImage;
+};

@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 
-const { sequelize } = require('../../config');
 const {
+  sequelize,
   Vehicle,
   VehicleImage,
   Tour,
@@ -66,8 +66,8 @@ const update = async (req, res) => {
         await VehicleImage.destroy({
           where: {
             [Op.and]: [
-              { imageUrl: { [Op.notIn]: [...oldImages] } },
-              { vehicleId: productId },
+              { image_url: { [Op.notIn]: [...oldImages] } },
+              { vehicle_id: productId },
             ],
           },
           transaction,
@@ -150,8 +150,8 @@ const update = async (req, res) => {
         await TourImage.destroy({
           where: {
             [Op.and]: [
-              { imageUrl: { [Op.notIn]: [...oldImages] } },
-              { tourId: productId },
+              { image_url: { [Op.notIn]: [...oldImages] } },
+              { tour_id: productId },
             ],
           },
           transaction,
@@ -168,7 +168,7 @@ const update = async (req, res) => {
 
       if (highlights) {
         await TourHighlight.destroy({
-          where: { tourId: productId },
+          where: { tour_id: productId },
           transaction,
         });
 
@@ -183,7 +183,7 @@ const update = async (req, res) => {
 
       if (itineraries) {
         await TourItinerary.destroy({
-          where: { tourId: productId },
+          where: { tour_id: productId },
           transaction,
         });
 
@@ -199,7 +199,7 @@ const update = async (req, res) => {
 
       if (dates) {
         await TourDate.destroy({
-          where: { tourId: productId },
+          where: { tour_id: productId },
           transaction,
         });
 

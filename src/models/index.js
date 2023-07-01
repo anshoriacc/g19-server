@@ -1,48 +1,43 @@
-const User = require('./user');
-const Vehicle = require('./vehicle');
-const Tour = require('./tour');
-const Reservation = require('./reservation');
-const Token = require('./token');
-const Profile = require('./profile');
-const TourItinerary = require('./tourItinerary');
-const TourHighlight = require('./tourHighlight');
-const VehicleImage = require('./vehicleImage');
-const TourImage = require('./tourImage');
-const Banner = require('./banner');
-const TourDate = require('./tourDate');
+'use strict';
 
-User.hasOne(Profile, { onDelete: 'CASCADE' });
-Profile.belongsTo(User, { onDelete: 'RESTRICT' });
-User.hasOne(Token, { onDelete: 'CASCADE' });
-Token.belongsTo(User);
-User.hasMany(Reservation, { onDelete: 'NO ACTION' });
-Reservation.belongsTo(User);
-Vehicle.hasMany(Reservation, { onDelete: 'NO ACTION' });
-Reservation.belongsTo(Vehicle);
-Tour.hasMany(Reservation, { onDelete: 'NO ACTION' });
-Reservation.belongsTo(Tour);
-Vehicle.hasMany(VehicleImage, { onDelete: 'CASCADE' });
-VehicleImage.belongsTo(Vehicle);
-Tour.hasMany(TourDate, { onDelete: 'CASCADE' });
-TourDate.belongsTo(Tour);
-Tour.hasMany(TourItinerary, { onDelete: 'CASCADE' });
-TourItinerary.belongsTo(Tour);
-Tour.hasMany(TourHighlight, { onDelete: 'CASCADE' });
-TourHighlight.belongsTo(Tour);
-Tour.hasMany(TourImage, { onDelete: 'CASCADE' });
-TourImage.belongsTo(Tour);
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const process = require('process');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
+const db = {};
 
-module.exports = {
-  User,
-  Vehicle,
-  Tour,
-  Reservation,
-  Token,
-  Profile,
-  VehicleImage,
-  TourDate,
-  TourItinerary,
-  TourHighlight,
-  TourImage,
-  Banner,
-};
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (
+      file.indexOf('.') !== 0 &&
+      file !== basename &&
+      file.slice(-3) === '.js' &&
+      file.indexOf('.test.js') === -1
+    );
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

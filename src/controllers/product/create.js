@@ -1,5 +1,5 @@
-const { sequelize } = require('../../config');
 const {
+  sequelize,
   Vehicle,
   VehicleImage,
   Tour,
@@ -43,7 +43,7 @@ const create = async (req, res) => {
           vehicleImages: images.map((image) => ({ imageUrl: image })),
         },
         {
-          include: [{ model: VehicleImage }],
+          include: [{ model: VehicleImage, as: 'vehicleImages' }],
           transaction,
         }
       );
@@ -84,6 +84,7 @@ const create = async (req, res) => {
         }));
         optionalIncludes.push({
           model: TourHighlight,
+          as: 'tourHighlights',
           attributes: ['highlight'],
         });
       }
@@ -95,6 +96,7 @@ const create = async (req, res) => {
         }));
         optionalIncludes.push({
           model: TourItinerary,
+          as: 'tourItineraries',
           attributes: ['time', 'itinerary'],
         });
       }
@@ -106,6 +108,7 @@ const create = async (req, res) => {
         }));
         optionalIncludes.push({
           model: TourDate,
+          as: 'tourDates',
           attributes: ['startDate', 'endDate'],
         });
       }
@@ -116,7 +119,7 @@ const create = async (req, res) => {
         },
         {
           include: [
-            { model: TourImage, attributes: ['imageUrl'] },
+            { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
             ...optionalIncludes,
           ],
           transaction,

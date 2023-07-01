@@ -1,2 +1,5 @@
 node_modules
 .env
+models
+src/migrations
+src/seeders

@@ -1,23 +1,29 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config');
-
-const Token = sequelize.define(
-  'token',
-  {
-    id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    token: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-  },
-  {
-    underscored: true,
+'use strict';
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Token extends Model {
+    static associate({ User }) {
+      this.belongsTo(User);
+    }
   }
-);
-
-module.exports = Token;
+  Token.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      token: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'Token',
+      underscored: true,
+    }
+  );
+  return Token;
+};

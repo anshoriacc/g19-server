@@ -2,8 +2,7 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const { sequelize } = require('../../config');
-const { User, Token } = require('../../models');
+const { sequelize, User, Token } = require('../../models');
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const ISSUER = process.env.JWT_ISSUER;

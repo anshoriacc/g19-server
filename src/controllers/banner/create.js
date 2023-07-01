@@ -1,5 +1,4 @@
-const { sequelize } = require('../../config');
-const { Banner } = require('../../models');
+const { sequelize, Banner } = require('../../models');
 
 const create = async (req, res) => {
   const { body, image } = req;

@@ -1,7 +1,6 @@
 const { UniqueConstraintError, ValidationError } = require('sequelize');
 
-const { sequelize } = require('../../config');
-const { Profile, User } = require('../../models');
+const { sequelize, Profile, User } = require('../../models');
 
 const update = async (req, res) => {
   const { id: userId } = req.params;
@@ -32,7 +31,7 @@ const update = async (req, res) => {
     if (image || name || address || phone) {
       await Profile.update(
         { ...body, imageUrl: image },
-        { where: { userId }, transaction }
+        { where: { user_id: userId }, transaction }
       );
     }
 

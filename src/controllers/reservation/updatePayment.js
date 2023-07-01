@@ -1,5 +1,4 @@
-const { sequelize } = require('../../config');
-const { Reservation } = require('../../models');
+const { sequelize, Reservation } = require('../../models');
 
 const updatePayment = async (req, res) => {
   const { order_id, transaction_status, fraud_status } = req.body;
@@ -10,13 +9,13 @@ const updatePayment = async (req, res) => {
       if (fraud_status === 'accept') {
         await Reservation.update(
           { status: 'paid' },
-          { where: { paymentId: order_id }, transaction }
+          { where: { payment_id: order_id }, transaction }
         );
       }
     } else if (transaction_status === 'settlement') {
       await Reservation.update(
         { status: 'paid' },
-        { where: { paymentId: order_id }, transaction }
+        { where: { payment_id: order_id }, transaction }
       );
     }
 

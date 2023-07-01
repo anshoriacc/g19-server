@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 
-const { sequelize } = require('../../config');
 const {
+  sequelize,
   Vehicle,
   VehicleImage,
   Tour,
@@ -46,7 +46,13 @@ const getList = async (req, res) => {
       const vehicles = await Vehicle.findAll({
         where: whereClause,
         order: orderClause,
-        include: [{ model: VehicleImage, attributes: ['imageUrl'] }],
+        include: [
+          {
+            model: VehicleImage,
+            as: 'vehicleImages',
+            attributes: ['imageUrl'],
+          },
+        ],
         limit,
         offset,
         transaction,
@@ -70,17 +76,20 @@ const getList = async (req, res) => {
         where: whereClause,
         order: orderClause,
         include: [
-          { model: TourImage, attributes: ['imageUrl'] },
+          { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
           {
             model: TourHighlight,
+            as: 'tourHighlights',
             attributes: ['highlight'],
           },
           {
             model: TourDate,
+            as: 'tourDates',
             attributes: ['startDate', 'endDate'],
           },
           {
             model: TourItinerary,
+            as: 'tourItineraries',
             attributes: ['time', 'itinerary'],
           },
         ],

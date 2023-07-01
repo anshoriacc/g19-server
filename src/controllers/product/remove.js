@@ -1,5 +1,4 @@
-const { sequelize } = require('../../config');
-const { Vehicle, Tour } = require('../../models');
+const { sequelize, Vehicle, Tour } = require('../../models');
 
 const productTypes = ['rental', 'tour', 'carter'];
 

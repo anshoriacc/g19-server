@@ -1,12 +1,9 @@
-const { sequelize } = require('../../config');
 const {
+  sequelize,
   Reservation,
   Vehicle,
   VehicleImage,
   Tour,
-  TourHighlight,
-  TourDate,
-  TourItinerary,
   TourImage,
 } = require('../../models');
 
@@ -27,7 +24,13 @@ const getDetail = async (req, res) => {
     if (data.type === 'rental') {
       const vehicle = await Vehicle.findByPk(data.vehicleId, {
         attributes: ['name'],
-        include: [{ model: VehicleImage, attributes: ['imageUrl'] }],
+        include: [
+          {
+            model: VehicleImage,
+            as: 'vehicleImages',
+            attributes: ['imageUrl'],
+          },
+        ],
       });
 
       const { vehicleImages, ...vehicleData } = vehicle.toJSON();
@@ -37,7 +40,9 @@ const getDetail = async (req, res) => {
     if (data.type === 'tour') {
       const tour = await Tour.findByPk(data.tourId, {
         attributes: ['name'],
-        include: [{ model: TourImage, attributes: ['imageUrl'] }],
+        include: [
+          { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
+        ],
         transaction,
       });
 

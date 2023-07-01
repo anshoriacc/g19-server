@@ -1,5 +1,4 @@
-const { sequelize } = require('../../config');
-const { Reservation } = require('../../models');
+const { sequelize, Reservation } = require('../../models');
 
 const update = async (req, res) => {
   const { id: reservationId } = req.params;
