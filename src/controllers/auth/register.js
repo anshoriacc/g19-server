@@ -25,7 +25,7 @@ const register = async (req, res) => {
         email,
         username,
         password: hashedPassword,
-        profile: {
+        user: {
           name,
           address,
           phone,
@@ -35,7 +35,7 @@ const register = async (req, res) => {
         include: [
           {
             model: Profile,
-            as: 'profile',
+            as: 'user',
             attributes: ['name', 'address', 'phone'],
           },
         ],
@@ -48,7 +48,7 @@ const register = async (req, res) => {
       include: [
         {
           model: Profile,
-          as: 'profile',
+          as: 'user',
           attributes: ['name', 'address', 'phone'],
         },
       ],

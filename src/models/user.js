@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Profile, Token, Reservation }) {
-      this.hasOne(Profile, { onDelete: 'CASCADE', as: 'profile' });
+      this.hasOne(Profile, { onDelete: 'CASCADE', as: 'user' });
       this.hasOne(Token, { onDelete: 'CASCADE' });
       this.hasMany(Reservation, { onDelete: 'NO ACTION' });
     }
