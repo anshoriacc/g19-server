@@ -10,8 +10,6 @@ const { responseMiddleware } = require('./src/middlewares');
 
 const corsOptions = {
   origin: '*',
-  allowedHeaders: ['Content-Type'],
-  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 };
 
 const app = express();
