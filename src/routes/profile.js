@@ -5,7 +5,7 @@ const { verifyJWT, upload, cloudinaryUpload } = require('../middlewares');
 const { profileController } = require('../controllers');
 
 router.patch(
-  '/:id',
+  '/',
   verifyJWT,
   upload.single,
   cloudinaryUpload('profiles', false),

@@ -26,7 +26,7 @@ const login = async (req, res) => {
         {
           model: Profile,
           as: 'user',
-          attributes: ['name', 'imageUrl'],
+          attributes: ['name', 'phone', 'address', 'imageUrl'],
         },
       ],
       transaction,
@@ -45,6 +45,8 @@ const login = async (req, res) => {
       username: user.username,
       role: user.role,
       name: user.user.name,
+      phone: user.user.phone,
+      address: user.user.address,
       image: user.user.imageUrl,
     };
 

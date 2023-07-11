@@ -3,13 +3,9 @@ const { UniqueConstraintError, ValidationError } = require('sequelize');
 const { sequelize, Profile, User } = require('../../models');
 
 const update = async (req, res) => {
-  const { id: userId } = req.params;
+  const { id: userId } = req.user;
   const { body, image } = req;
   const { email, username, password, name, address, phone } = body;
-
-  if (userId !== req.user.id) {
-    return res.error(403);
-  }
 
   if (
     !email &&
