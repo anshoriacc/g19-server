@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const { sequelize, User, Token } = require('../../models');
+const { sequelize, User, Token, Profile } = require('../../models');
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const ISSUER = process.env.JWT_ISSUER;
@@ -22,6 +22,13 @@ const login = async (req, res) => {
       where: {
         [Op.or]: [{ email: emailOrUsername }, { username: emailOrUsername }],
       },
+      include: [
+        {
+          model: Profile,
+          as: 'user',
+          attributes: ['name', 'imageUrl'],
+        },
+      ],
       transaction,
     });
 
@@ -37,6 +44,8 @@ const login = async (req, res) => {
       email: user.email,
       username: user.username,
       role: user.role,
+      name: user.user.name,
+      image: user.user.imageUrl,
     };
 
     const jwtOptions = rememberMe
