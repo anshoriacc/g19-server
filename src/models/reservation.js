@@ -49,6 +49,29 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'pending',
       },
+      userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'User',
+          key: 'id',
+        },
+      },
+      vehicleId: {
+        type: DataTypes.UUID,
+        references: {
+          model: 'Vehicle',
+          key: 'id',
+        },
+      },
+      tourId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'Tour',
+          key: 'id',
+        },
+      },
     },
     {
       sequelize,

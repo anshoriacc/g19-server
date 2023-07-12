@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      vehicleId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "Vehicle",
+          key: "id"
+        }
+      },
     },
     {
       sequelize,
