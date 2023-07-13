@@ -25,7 +25,7 @@ const cloudinaryUpload = (folderName, random) => async (req, res, next) => {
         folder: folderName,
       });
 
-      const uploadedImage = upload.url;
+      const uploadedImage = `https${upload.url.slice(4)}`;
       req.image = uploadedImage;
 
       console.log('image uploaded');
@@ -51,7 +51,7 @@ const cloudinaryUpload = (folderName, random) => async (req, res, next) => {
         folder: folderName,
       });
 
-      return upload.url;
+      return `https${upload.url.slice(4)}`;
     });
 
     try {

@@ -22,14 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      tourId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: "Tour",
-          key: "id"
-        }
-      },
     },
     {
       sequelize,

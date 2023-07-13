@@ -18,14 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      tourId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: "Tour",
-          key: "id"
-        }
-      },
     },
     {
       sequelize,
