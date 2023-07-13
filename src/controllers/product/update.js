@@ -77,7 +77,7 @@ const update = async (req, res) => {
       let imagesStored = [];
       if (images.length > 0) {
         imagesStored = await VehicleImage.bulkCreate(
-          images.map((image) => ({ imageUrl: image, vehicleId: productId })),
+          images.map((image) => ({ imageUrl: image, vehicle_id: productId })),
           { transaction }
         );
       }
@@ -161,7 +161,7 @@ const update = async (req, res) => {
       let imagesStored = [];
       if (images.length > 0) {
         imagesStored = await TourImage.bulkCreate(
-          images.map((image) => ({ imageUrl: image, tourId: productId })),
+          images.map((image) => ({ imageUrl: image, tour_id: productId })),
           { transaction }
         );
       }
@@ -175,7 +175,7 @@ const update = async (req, res) => {
         await TourHighlight.bulkCreate(
           highlights.map((highlight) => ({
             highlight: highlight,
-            tourId: productId,
+            tour_id: productId,
           })),
           { transaction }
         );
@@ -191,7 +191,7 @@ const update = async (req, res) => {
           itineraries.map((itinerary) => ({
             time: itinerary.time,
             itinerary: itinerary.itinerary,
-            tourId: productId,
+            tour_id: productId,
           })),
           { transaction }
         );
@@ -207,7 +207,7 @@ const update = async (req, res) => {
           dates.map((date) => ({
             startDate: date.startDate,
             endDate: date.endDate,
-            tourId: productId,
+            tour_id: productId,
           })),
           { transaction }
         );

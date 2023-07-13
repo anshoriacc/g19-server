@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Profile extends Model {
     static associate({ User }) {
-      this.belongsTo(User, { onDelete: 'RESTRICT' });
+      this.belongsTo(User, { foreignKey: 'user_id', onDelete: 'RESTRICT' });
     }
   }
   Profile.init(
