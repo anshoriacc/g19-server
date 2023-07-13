@@ -42,7 +42,7 @@ const getList = async (req, res) => {
           include: [
             {
               model: Profile,
-              as: 'profile',
+              as: 'user',
               attributes: ['name', 'imageUrl'],
             },
           ],
@@ -78,8 +78,8 @@ const getList = async (req, res) => {
       user = {
         email: user.email,
         username: user.username,
-        name: user.profile.name,
-        imageUrl: user.profile.imageUrl,
+        name: user.user.name,
+        imageUrl: user.user.imageUrl,
       };
       if (vehicle)
         vehicle = {
