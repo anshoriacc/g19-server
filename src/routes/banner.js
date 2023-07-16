@@ -10,7 +10,7 @@ const {
   cloudinaryUpload,
 } = require('../middlewares');
 
-router.get('/', verifyJWT, authorize.admin, bannerController.getList);
+router.get('/', bannerController.getList);
 router.post(
   '/',
   verifyJWT,
