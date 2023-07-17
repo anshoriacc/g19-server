@@ -65,7 +65,7 @@ const getDetail = async (req, res) => {
     if (type.toLowerCase() === 'tour') {
       const tour = await Tour.findByPk(productId, {
         include: [
-          { model: TourImage, as: 'vehicleImages', attributes: ['imageUrl'] },
+          { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
           {
             model: TourHighlight,
             as: 'tourHighlights',
