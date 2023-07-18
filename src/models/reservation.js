@@ -66,7 +66,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       tourId: {
         type: DataTypes.UUID,
-        allowNull: false,
         references: {
           model: 'Tour',
           key: 'id',

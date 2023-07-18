@@ -20,7 +20,7 @@ const create = async (req, res) => {
     !startDate ||
     !endDate ||
     !total ||
-    !payment ||
+    (user.role !== 'admin' && !payment) ||
     (!vehicleId && !tourId && !carterId)
   ) {
     return res.error(400, 'Semua kolom wajib diisi');
