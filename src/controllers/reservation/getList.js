@@ -43,14 +43,14 @@ const getList = async (req, res) => {
             {
               model: Profile,
               as: 'user',
-              attributes: ['name', 'imageUrl'],
+              attributes: ['name', 'imageUrl', 'phone', 'address'],
             },
           ],
         },
         {
           model: Vehicle,
           as: 'vehicle',
-          attributes: ['name'],
+          attributes: ['name', 'id'],
           include: [
             {
               model: VehicleImage,
@@ -62,7 +62,7 @@ const getList = async (req, res) => {
         {
           model: Tour,
           as: 'tour',
-          attributes: ['name'],
+          attributes: ['name', 'id'],
           include: [
             { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
           ],
@@ -79,6 +79,8 @@ const getList = async (req, res) => {
         email: user.email,
         username: user.username,
         name: user.user.name,
+        phone: user.user.phone,
+        address: user.user.address,
         imageUrl: user.user.imageUrl,
       };
       if (vehicle)
@@ -88,7 +90,10 @@ const getList = async (req, res) => {
         };
 
       if (tour)
-        tour = { name: tour.name, imageUrl: tour.tourImages[0].imageUrl };
+        tour = {
+          name: tour.name,
+          imageUrl: tour.tourImages[0].imageUrl,
+        };
 
       return {
         ...reservationData,

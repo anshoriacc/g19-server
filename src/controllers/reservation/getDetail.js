@@ -5,6 +5,8 @@ const {
   VehicleImage,
   Tour,
   TourImage,
+  User,
+  Profile,
 } = require('../../models');
 
 const getDetail = async (req, res) => {
@@ -13,48 +15,76 @@ const getDetail = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
     const reservation = await Reservation.findByPk(reservationId, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['email', 'username'],
+          include: [
+            {
+              model: Profile,
+              as: 'user',
+              attributes: ['name', 'imageUrl', 'phone', 'address'],
+            },
+          ],
+        },
+        {
+          model: Vehicle,
+          as: 'vehicle',
+          attributes: ['name', 'id'],
+          include: [
+            {
+              model: VehicleImage,
+              as: 'vehicleImages',
+              attributes: ['imageUrl'],
+            },
+          ],
+        },
+        {
+          model: Tour,
+          as: 'tour',
+          attributes: ['name', 'id'],
+          include: [
+            { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
+          ],
+        },
+      ],
       transaction,
     });
 
     if (!reservation) return res.error(404);
 
-    const data = reservation.toJSON();
-    let product;
-
-    if (data.type === 'rental') {
-      const vehicle = await Vehicle.findByPk(data.vehicleId, {
-        attributes: ['name'],
-        include: [
-          {
-            model: VehicleImage,
-            as: 'vehicleImages',
-            attributes: ['imageUrl'],
-          },
-        ],
-      });
-
-      const { vehicleImages, ...vehicleData } = vehicle.toJSON();
-      product = { ...vehicleData, image: vehicleImages[0].imageUrl };
-    }
-
-    if (data.type === 'tour') {
-      const tour = await Tour.findByPk(data.tourId, {
-        attributes: ['name'],
-        include: [
-          { model: TourImage, as: 'tourImages', attributes: ['imageUrl'] },
-        ],
-        transaction,
-      });
-
-      const { tourImages, ...tourData } = tour.toJSON();
-      product = {
-        ...tourData,
-        image: tourImages[0].imageUrl,
+    // const data = reservation.toJSON();
+    let { user, vehicle, tour, ...reservationData } = reservation.toJSON();
+    user = {
+      email: user.email,
+      username: user.username,
+      name: user.user.name,
+      phone: user.user.phone,
+      address: user.user.address,
+      imageUrl: user.user.imageUrl,
+    };
+    if (vehicle)
+      vehicle = {
+        id: vehicle.id,
+        name: vehicle.name,
+        imageUrl: vehicle.vehicleImages[0].imageUrl,
       };
-    }
 
-    data.product = { ...product };
+    if (tour)
+      tour = {
+        id: tour.id,
+        name: tour.name,
+        imageUrl: tour.tourImages[0].imageUrl,
+      };
 
+    const data = {
+      ...reservationData,
+      user,
+      vehicle,
+      tour,
+    };
+    
     await transaction.commit();
 
     return res.success(200, {
