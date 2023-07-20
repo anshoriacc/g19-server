@@ -1,3 +1,4 @@
+const { midtransSnap } = require('../../helpers');
 const {
   sequelize,
   Reservation,
@@ -78,13 +79,21 @@ const getDetail = async (req, res) => {
         imageUrl: tour.tourImages[0].imageUrl,
       };
 
+    let paymentDetail;
+    if (reservationData?.paymentId) {
+      paymentDetail = await midtransSnap.transaction.status(
+        reservationData?.paymentId
+      );
+    }
+
     const data = {
       ...reservationData,
       user,
       vehicle,
       tour,
+      paymentDetail,
     };
-    
+
     await transaction.commit();
 
     return res.success(200, {
