@@ -17,6 +17,11 @@ const updatePayment = async (req, res) => {
         { status: 'paid' },
         { where: { payment_id: order_id }, transaction }
       );
+    } else if (transaction_status === 'deny' || transaction_status === 'expire' || transaction_status === 'failure') {
+      await Reservation.update(
+        { status: 'cancelled' },
+        { where: { payment_id: order_id }, transaction }
+      );
     }
 
     await transaction.commit();
