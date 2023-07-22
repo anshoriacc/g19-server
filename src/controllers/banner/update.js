@@ -5,10 +5,6 @@ const update = async (req, res) => {
   const { body, image } = req;
   const { title, url, isDisplayed } = body;
 
-  if (!title && !image) {
-    return res.error(400, 'Isi minimal 1 kolom yang akan diubah.');
-  }
-
   const transaction = await sequelize.transaction();
   try {
     await Banner.update(
