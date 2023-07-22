@@ -1,9 +1,18 @@
 const { sequelize, Banner } = require('../../models');
 
 const getList = async (req, res) => {
+  const { isDisplayed } = req.params;
+
+  const whereClause = {};
+  if (isDisplayed) {
+    whereClause.isDisplayed = true;
+  }
   const transaction = await sequelize.transaction();
   try {
-    const banners = await Banner.findAll({ transaction });
+    const banners = await Banner.findAll({
+      whereClause,
+      transaction,
+    });
 
     await transaction.commit();
 

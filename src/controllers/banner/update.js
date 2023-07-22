@@ -5,7 +5,7 @@ const update = async (req, res) => {
   const { body, image } = req;
   const { title, url, isDisplayed } = body;
 
-  if (!title && !url && !image) {
+  if (!title && !image) {
     return res.error(400, 'Isi minimal 1 kolom yang akan diubah.');
   }
 
@@ -20,7 +20,7 @@ const update = async (req, res) => {
 
     res.success(200, {
       message: 'Success update banner.',
-      data: { title, image, url },
+      data: { title, image, url, isDisplayed },
     });
   } catch (err) {
     console.log('update banner error', err);
