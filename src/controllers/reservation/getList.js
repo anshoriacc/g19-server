@@ -12,7 +12,7 @@ const {
 
 const getList = async (req, res) => {
   const { user } = req;
-  const { type, status, sortBy, limit = 10, page = 1 } = req.query;
+  const { type, status, sortBy, limit, page = 1 } = req.query;
   const offset = (parseInt(page) - 1) * parseInt(limit);
 
   const whereClause = {};
