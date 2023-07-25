@@ -13,7 +13,7 @@ const {
 const getList = async (req, res) => {
   const { user } = req;
   const { type, status, sortBy, limit, page = 1 } = req.query;
-  const offset = (parseInt(page) - 1) * parseInt(limit);
+  const offset = (parseInt(page) - 1) * parseInt(limit ?? 0);
 
   const whereClause = {};
   if (user.role !== 'admin') whereClause.userId = user.id;
