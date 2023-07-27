@@ -23,6 +23,7 @@ router.patch(
   '/:id',
   verifyJWT,
   authorize.admin,
+  upload.single,
   cloudinaryUpload('banners', true),
   bannerController.update
 );

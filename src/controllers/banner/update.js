@@ -4,7 +4,6 @@ const update = async (req, res) => {
   const { id: bannerId } = req.params;
   const { body, image } = req;
   const { title, url, isDisplayed } = body;
-  console.log('body', req)
 
   const transaction = await sequelize.transaction();
   try {
