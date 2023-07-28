@@ -5,19 +5,19 @@ const updatePayment = async (req, res) => {
 
   const transaction = await sequelize.transaction();
   try {
-    if (transaction_status === 'capture') {
-      if (fraud_status === 'accept') {
-        await Reservation.update(
-          { status: 'paid' },
-          { where: { payment_id: order_id }, transaction }
-        );
-      }
-    } else if (transaction_status === 'settlement') {
+    if (
+      transaction_status === 'capture' ||
+      transaction_status === 'settlement'
+    ) {
       await Reservation.update(
         { status: 'paid' },
         { where: { payment_id: order_id }, transaction }
       );
-    } else if (transaction_status === 'deny' || transaction_status === 'expire' || transaction_status === 'failure') {
+    } else if (
+      transaction_status === 'deny' ||
+      transaction_status === 'expire' ||
+      transaction_status === 'failure'
+    ) {
       await Reservation.update(
         { status: 'cancelled' },
         { where: { payment_id: order_id }, transaction }
