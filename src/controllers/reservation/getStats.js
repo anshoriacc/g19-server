@@ -13,6 +13,7 @@ const getStats = async (req, res) => {
           sequelize.fn('date_part', 'YEAR', sequelize.col('created_at')),
           year
         ),
+        status: { [Op.notIn]: ['cancelled', 'pending'] },
       },
 
       attributes: [
